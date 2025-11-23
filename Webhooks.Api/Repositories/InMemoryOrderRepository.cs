@@ -8,7 +8,7 @@ internal sealed class InMemoryOrderRepository
 
     public void Add(Order order)
     {
-        _orders.Add(order); 
+        _orders.Add(order);
     }
 
     public IReadOnlyList<Order> GetAll()

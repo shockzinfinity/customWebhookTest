@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
 using Webhooks.Api.Models;
 
 namespace Webhooks.Api.Data;
