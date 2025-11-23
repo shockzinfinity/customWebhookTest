@@ -15,6 +15,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<WebhookDispatcher>();
 
 builder.Services.AddDbContext<WebhooksDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("webhooks")));
+builder.Services.AddHostedService<WebhookProcessor>();
 
 builder.Services.AddSingleton(_ =>
 {

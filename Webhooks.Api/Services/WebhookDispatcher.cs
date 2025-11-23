@@ -1,28 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Text.Json;
+using System.Threading.Channels;
 using Webhooks.Api.Data;
 using Webhooks.Api.Models;
+using Webhooks.Api.OpenTelemetry;
 
 namespace Webhooks.Api.Services;
 
-internal sealed class WebhookDispatcher
+internal sealed class WebhookDispatcher(Channel<WebhookDispatch> webhooksChannel, IHttpClientFactory httpClientFactory, WebhooksDbContext dbContext)
 {
-    private readonly WebhooksDbContext _db;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public WebhookDispatcher(WebhooksDbContext db, IHttpClientFactory httpClientFactory)
+    public async Task DispatchAsync<T>(string eventType, T data)
+        where T : notnull
     {
-        _db = db;
-        _httpClientFactory = httpClientFactory;
+        using Activity? activity = DiagnosticConfig.Source.StartActivity($"{eventType} dispatch webhook");
+        activity?.AddTag("event.type", eventType);
+
+        await webhooksChannel.Writer.WriteAsync(new WebhookDispatch(eventType, data, activity?.Id));
     }
 
-    public async Task DispatchAsync<T>(string eventType, T data)
+    public async Task ProcessAsync<T>(string eventType, T data)
     {
-        var subscriptions = await _db.WebhookSubscriptions.AsNoTracking().Where(s => s.EventType == eventType).ToListAsync();
+        var subscriptions = await dbContext.WebhookSubscriptions.AsNoTracking().Where(s => s.EventType == eventType).ToListAsync();
 
         foreach (WebhookSubscription subscription in subscriptions)
         {
-            using var httpClient = _httpClientFactory.CreateClient();
+            using var httpClient = httpClientFactory.CreateClient();
 
             var payload = new WebhookPayload<T>
             {
@@ -47,8 +50,8 @@ internal sealed class WebhookDispatcher
                     Success = response.IsSuccessStatusCode,
                     Timestamp = DateTime.UtcNow,
                 };
-                _db.WebhookDeliverAttempts.Add(attempt);
-                await _db.SaveChangesAsync();
+                dbContext.WebhookDeliverAttempts.Add(attempt);
+                await dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -61,8 +64,8 @@ internal sealed class WebhookDispatcher
                     Success = false,
                     Timestamp = DateTime.UtcNow,
                 };
-                _db.WebhookDeliverAttempts.Add(attempt);
-                await _db.SaveChangesAsync();
+                dbContext.WebhookDeliverAttempts.Add(attempt);
+                await dbContext.SaveChangesAsync();
 
                 // Optionally, log the exception or handle it (not rethrowing to not disrupt other webhooks)
                 Console.WriteLine($"Failed to send webhook to {subscription.WebhookUrl}:{ex.Message}");
