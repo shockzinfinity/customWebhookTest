@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/aspire/">
+    <Project Path="Webhooks.AppHost/Webhooks.AppHost.csproj" Id="2b8c23a1-7601-4ab3-aefb-21a7ebd02c1f" />
+    <Project Path="Webhooks.ServiceDefaults/Webhooks.ServiceDefaults.csproj" Id="b2dab99e-051f-4f8e-be80-fd0757d9b8e1" />
+  </Folder>
+  <Folder Name="/client/">
+    <Project Path="WebhookClient/WebhookClient.csproj" />
+  </Folder>
+  <Project Path="Webhooks.Api/Webhooks.Api.csproj" />
+</Solution>

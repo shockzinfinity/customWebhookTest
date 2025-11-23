@@ -1,0 +1,40 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
+using Webhooks.Api.Models;
+
+namespace Webhooks.Api.Data;
+
+internal sealed class WebhooksDbContext : DbContext
+{
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; }
+    public DbSet<WebhookDeliverAttempt> WebhookDeliverAttempts { get; set; }
+
+    public WebhooksDbContext(DbContextOptions<WebhooksDbContext> options) : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Order>(builder =>
+        {
+            builder.ToTable("orders");
+            builder.HasKey(o => o.Id);
+        });
+
+        modelBuilder.Entity<WebhookSubscription>(builder =>
+        {
+            builder.ToTable("subscriptions", schema: "webhooks");
+            builder.HasKey(s => s.Id);
+        });
+
+        modelBuilder.Entity<WebhookDeliverAttempt>(builder =>
+        {
+            builder.ToTable("delivery_attempts", schema: "webhooks");
+            builder.HasKey(d => d.Id);
+            builder.HasOne<WebhookSubscription>()
+            .WithMany()
+            .HasForeignKey(d => d.WebhookSubscriptionId);
+        });
+    }
+}
