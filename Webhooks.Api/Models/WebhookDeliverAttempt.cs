@@ -1,6 +1,6 @@
 ﻿namespace Webhooks.Api.Models;
 
-public class WebhookDeliverAttempt
+public class WebhookDeliveryAttempt
 {
     public Guid Id { get; set; }
     public Guid WebhookSubscriptionId { get; set; }

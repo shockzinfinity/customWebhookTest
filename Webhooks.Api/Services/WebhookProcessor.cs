@@ -18,7 +18,8 @@ internal sealed class WebhookProcessor(IServiceScopeFactory scopeFactory, Channe
             using IServiceScope scope = scopeFactory.CreateScope();
             var dispatcher = scope.ServiceProvider.GetRequiredService<WebhookDispatcher>();
 
-            await dispatcher.ProcessAsync(dispatch.EventType, dispatch.Data);
+            // removed dispatcher.ProcessAsync()
+            //await dispatcher.ProcessAsync(dispatch.EventType, dispatch.Data);
         }
     }
 }

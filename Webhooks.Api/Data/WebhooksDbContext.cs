@@ -7,7 +7,7 @@ internal sealed class WebhooksDbContext : DbContext
 {
     public DbSet<Order> Orders { get; set; }
     public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; }
-    public DbSet<WebhookDeliverAttempt> WebhookDeliverAttempts { get; set; }
+    public DbSet<WebhookDeliveryAttempt> WebhookDeliverAttempts { get; set; }
 
     public WebhooksDbContext(DbContextOptions<WebhooksDbContext> options) : base(options)
     {
@@ -27,7 +27,7 @@ internal sealed class WebhooksDbContext : DbContext
             builder.HasKey(s => s.Id);
         });
 
-        modelBuilder.Entity<WebhookDeliverAttempt>(builder =>
+        modelBuilder.Entity<WebhookDeliveryAttempt>(builder =>
         {
             builder.ToTable("delivery_attempts", schema: "webhooks");
             builder.HasKey(d => d.Id);
