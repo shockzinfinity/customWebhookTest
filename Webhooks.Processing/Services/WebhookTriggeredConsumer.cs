@@ -4,10 +4,8 @@ using System.Text.Json.Nodes;
 using Webhooks.Contract;
 using Webhooks.Processing.Data;
 using Webhooks.Processing.Models;
-using Webhooks.Processing.OpenTelemetry;
 
 namespace Webhooks.Processing.Services;
-
 
 internal sealed class WebhookTriggeredConsumer(IHttpClientFactory httpClientFactory, WebhooksDbContext dbContext) : IConsumer<WebhookTriggered>
 {

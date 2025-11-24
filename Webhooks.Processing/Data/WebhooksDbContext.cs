@@ -6,7 +6,7 @@ namespace Webhooks.Processing.Data;
 internal sealed class WebhooksDbContext(DbContextOptions<WebhooksDbContext> options) : DbContext(options)
 {
     public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; }
-    public DbSet<WebhookDeliveryAttempt> WebhookDeliveryAttempts { get; set;}
+    public DbSet<WebhookDeliveryAttempt> WebhookDeliveryAttempts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
