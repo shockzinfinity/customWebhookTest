@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebhookClient\WebhookClient.csproj" />
     <ProjectReference Include="..\Webhooks.Api\Webhooks.Api.csproj" />
+    <ProjectReference Include="..\Webhooks.Processing\Webhooks.Processing.csproj" />
   </ItemGroup>
 
 </Project>

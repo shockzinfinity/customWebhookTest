@@ -9,13 +9,8 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
-    <PackageReference Include="Npgsql.OpenTelemetry" Versixon="10.0.0" Version="10.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.0.1" />
+    <PackageReference Include="Npgsql.OpenTelemetry" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>

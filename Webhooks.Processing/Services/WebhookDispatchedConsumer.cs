@@ -1,15 +1,15 @@
 ﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Webhooks.Api.Data;
+using Webhooks.Contract;
+using Webhooks.Processing.Data;
 
-namespace Webhooks.Api.Services;
+namespace Webhooks.Processing.Services;
 
 internal sealed class WebhookDispatchedConsumer(WebhooksDbContext dbContext) : IConsumer<WebhookDispatched>
 {
     public async Task Consume(ConsumeContext<WebhookDispatched> context)
     {
         var message = context.Message;
-
         var subscriptions = await dbContext.WebhookSubscriptions.AsNoTracking().Where(s => s.EventType == message.EventType).ToListAsync();
 
         foreach (var subscription in subscriptions)

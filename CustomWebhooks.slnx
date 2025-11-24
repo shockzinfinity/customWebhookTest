@@ -12,4 +12,6 @@
     <Project Path="WebhookClient/WebhookClient.csproj" />
   </Folder>
   <Project Path="Webhooks.Api/Webhooks.Api.csproj" />
+  <Project Path="Webhooks.Contract/Webhooks.Contract.csproj" />
+  <Project Path="Webhooks.Processing/Webhooks.Processing.csproj" />
 </Solution>

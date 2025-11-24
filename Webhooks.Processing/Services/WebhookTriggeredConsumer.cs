@@ -1,10 +1,13 @@
 ﻿using MassTransit;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Webhooks.Api.Data;
-using Webhooks.Api.Models;
+using Webhooks.Contract;
+using Webhooks.Processing.Data;
+using Webhooks.Processing.Models;
+using Webhooks.Processing.OpenTelemetry;
 
-namespace Webhooks.Api.Services;
+namespace Webhooks.Processing.Services;
+
 
 internal sealed class WebhookTriggeredConsumer(IHttpClientFactory httpClientFactory, WebhooksDbContext dbContext) : IConsumer<WebhookTriggered>
 {
@@ -37,7 +40,7 @@ internal sealed class WebhookTriggeredConsumer(IHttpClientFactory httpClientFact
                 Timestamp = DateTime.UtcNow
             };
 
-            dbContext.WebhookDeliverAttempts.Add(attempt);
+            dbContext.WebhookDeliveryAttempts.Add(attempt);
 
             await dbContext.SaveChangesAsync();
         }
@@ -57,7 +60,7 @@ internal sealed class WebhookTriggeredConsumer(IHttpClientFactory httpClientFact
                 Timestamp = DateTime.UtcNow
             };
 
-            dbContext.WebhookDeliverAttempts.Add(attempt);
+            dbContext.WebhookDeliveryAttempts.Add(attempt);
 
             await dbContext.SaveChangesAsync();
         }

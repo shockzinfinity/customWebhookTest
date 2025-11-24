@@ -7,7 +7,7 @@ internal sealed class WebhooksDbContext : DbContext
 {
     public DbSet<Order> Orders { get; set; }
     public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; }
-    public DbSet<WebhookDeliveryAttempt> WebhookDeliverAttempts { get; set; }
+    public DbSet<WebhookDeliveryAttempt> WebhookDeliveryAttempts { get; set; }
 
     public WebhooksDbContext(DbContextOptions<WebhooksDbContext> options) : base(options)
     {
